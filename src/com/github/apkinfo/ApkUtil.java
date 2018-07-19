@@ -18,15 +18,20 @@ public class ApkUtil {
 
 	private static final Namespace NS = Namespace.getNamespace("http://schemas.android.com/apk/res/android");
 
-	public static ApkInfo getApkInfo(File apkFile) {
+	public static ApkInfo getApkInfo(File file) {
+		return getApkInfo(file, false);
+	}
+
+	public static ApkInfo getApkInfo(File apkFile, boolean strictFile) {
 
 		try {
-			
-			if (!apkFile.getName().endsWith(".apk")) {
-				System.out.println("file name [" + apkFile.getPath() + "] not end with .apk!");
-				return null;
+			if (strictFile) {
+				if (!apkFile.getName().endsWith(".apk")) {
+					System.out.println("file name [" + apkFile.getPath() + "] not end with .apk!");
+					return null;
+				}
 			}
-			
+
 			if (!apkFile.exists()) {
 				System.out.println("file " + apkFile.getPath() + " not exists!!!");
 				return null;
