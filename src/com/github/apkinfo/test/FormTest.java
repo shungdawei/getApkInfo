@@ -31,6 +31,8 @@ public class FormTest extends javax.swing.JFrame {
 	 * Creates new form NewJFrame
 	 */
 	public FormTest() {
+		this.setTitle("ApkInfo GUI");
+		this.setResizable(false);
 		initComponents();
 	}
 
@@ -67,13 +69,13 @@ public class FormTest extends javax.swing.JFrame {
 		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
 				.createSequentialGroup().addContainerGap()
 				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+						.addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
 						.addGroup(layout.createSequentialGroup().addComponent(jButton1).addGap(0, 0, Short.MAX_VALUE)))
 				.addContainerGap()));
 		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
 				.createSequentialGroup().addContainerGap().addComponent(jButton1)
 				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jScrollPane1,
-						javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+						javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
 				.addContainerGap()));
 
 		pack();
@@ -90,15 +92,32 @@ public class FormTest extends javax.swing.JFrame {
 
 		fileChooser.setDialogTitle("选择文件路径");
 		fileChooser.setApproveButtonText("确定");
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		result = fileChooser.showOpenDialog(this);
 		if (JFileChooser.APPROVE_OPTION == result) {
 			path = fileChooser.getSelectedFile().getPath();
 			System.out.println("path: " + path);
+			jTextArea1.setText("");
 		}
 		if (path == null || path.equals("")) {
 			return;
 		}
+		boolean fileMode = true;
+		File filex = new File(path);
+		if(fileMode)
+		{
+			try {
+				String str = jTextArea1.getText();
+				String s = "文件名:" + filex.getName() + "\n" + "文件大小:" + getFileSize(filex) + "Bit; "
+						+ (float) getFileSize(filex) / (float) 1024 / (float) 1024 + "MB" + ApkUtil.getApkInfo(filex)
+						+ "\n\n";
+				jTextArea1.setText(s + str);
+			} catch (Exception ex) {
+				Logger.getLogger(FormTest.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			return;
+		}
+		
 		jTextArea1.setText("");
 		f = new File(path);
 		if (f.exists()) {
